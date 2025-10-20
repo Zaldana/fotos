@@ -96,9 +96,9 @@ export default function Home() {
             About the Photographer
           </h2>
           <p className="text-lg text-gray-600 leading-relaxed">
-            Welcome to my photography portfolio. I'm passionate about capturing the world's 
+            Welcome to my photography portfolio. I&apos;m passionate about capturing the world&apos;s 
             natural beauty and the stories of travel and adventure. Each photograph tells a 
-            story, whether it's the serene beauty of a mountain landscape or the vibrant 
+            story, whether it&apos;s the serene beauty of a mountain landscape or the vibrant
             energy of a bustling city street. Through my lens, I aim to share these moments 
             and inspire others to explore and appreciate the world around us.
           </p>

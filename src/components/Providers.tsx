@@ -1,7 +1,4 @@
-'use client'
-
-import { SessionProvider } from "next-auth/react"
-
+// No providers needed for file-based CMS
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <SessionProvider>{children}</SessionProvider>
+  return <>{children}</>
 }

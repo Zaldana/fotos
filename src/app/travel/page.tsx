@@ -1,52 +1,14 @@
 import Image from "next/image";
+import { getGalleryImages } from "@/lib/gallery";
 
-// Sample images - in a real app, these would come from a database
-const travelImages = [
-  {
-    id: 1,
-    src: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop",
-    alt: "City skyline",
-    title: "Urban Skyline",
-    description: "The bustling energy of city life captured at golden hour"
-  },
-  {
-    id: 2,
-    src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    alt: "Historic architecture",
-    title: "Historic Architecture",
-    description: "Ancient buildings telling stories of the past"
-  },
-  {
-    id: 3,
-    src: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop",
-    alt: "Street market",
-    title: "Local Market",
-    description: "Vibrant colors and flavors of local culture"
-  },
-  {
-    id: 4,
-    src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    alt: "Coastal town",
-    title: "Coastal Town",
-    description: "Charming seaside village with traditional architecture"
-  },
-  {
-    id: 5,
-    src: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop",
-    alt: "Mountain village",
-    title: "Mountain Village",
-    description: "Peaceful village nestled in the mountains"
-  },
-  {
-    id: 6,
-    src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    alt: "Desert landscape",
-    title: "Desert Journey",
-    description: "Endless horizons and the beauty of vast landscapes"
-  }
-];
+// Get travel images from file system at build time
+function getTravelImages() {
+  return getGalleryImages('travel');
+}
 
 export default function TravelPage() {
+  const travelImages = getTravelImages();
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -66,26 +28,46 @@ export default function TravelPage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {travelImages.map((image) => (
-              <div key={image.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
-                <div className="relative h-64">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className="object-cover"
-                  />
+            {travelImages.length > 0 ? (
+              travelImages.map((image) => (
+                <div key={image.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                  <div className="relative h-64">
+                    <Image
+                      src={image.url}
+                      alt={image.metadata.title || image.filename}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      {image.metadata.title || image.filename}
+                    </h3>
+                    <p className="text-gray-600">
+                      {image.metadata.description || 'A beautiful travel photograph'}
+                    </p>
+                    {image.metadata.tags && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {image.metadata.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2 py-1 bg-orange-100 text-orange-800 text-sm rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {image.title}
-                  </h3>
-                  <p className="text-gray-600">
-                    {image.description}
-                  </p>
-                </div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-500 text-lg">
+                  No travel images found. Add some images to the public/gallery/travel/ folder.
+                </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
